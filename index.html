@@ -97,7 +97,7 @@ document.getElementById("billingForm").addEventListener("submit", async function
   errorMsg.style.display = "none";
 
   try {
-    const res = await fetch("https://resend.com/api-keys/5b2122b7-a197-4ea9-9232-51428abf273c", {
+    const res = await fetch("https://inv-iota-five.vercel.app/api/send", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)
