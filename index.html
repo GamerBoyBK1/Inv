@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoRamTix - Internal Order Tool</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f3ff;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 95%;
+        max-width: 500px;
+        background: #fff;
+        padding: 20px;
+        margin: 40px auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(114, 0, 255, 0.15);
+    }
+
+    h2 {
+        text-align: center;
+        color: #7200ff;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 14px;
+        color: #333;
+        display: block;
+        margin-top: 12px;
+        font-weight: 600;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #7200ff;
+        border-radius: 6px;
+        margin-top: 4px;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        background: #7200ff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 6px;
+        transition: 0.2s ease-in-out;
+    }
+
+    button:hover {
+        background: #5a00cc;
+    }
+
+    .msg {
+        margin-top: 14px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>CoRamTix Invoice Request</h2>
+
+    <form id="orderForm">
+
+        <label>Full Name</label>
+        <input type="text" name="fullname" required>
+
+        <label>Mobile Number</label>
+        <input type="text" name="mobile" required>
+
+        <label>Customer Email</label>
+        <input type="email" name="email" required>
+
+        <label>Product Name</label>
+        <input type="text" name="product" required>
+
+        <label>Purchase Date</label>
+        <input type="date" name="date" required>
+
+        <label>Game Panel Email</label>
+        <input type="email" name="panel_email">
+
+        <label>Game Panel Password</label>
+        <input type="text" name="panel_password">
+
+        <button type="submit">Send to Customer Care</button>
+
+        <p class="msg" id="msg"></p>
+
+    </form>
+</div>
+
+<script>
+document.getElementById("orderForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(e.target).entries());
+    const msgEl = document.getElementById("msg");
+    msgEl.innerHTML = "Sending... Please wait 🚀";
+
+    try {
+        const res = await fetch("https://resend.com/api-keys/5b2122b7-a197-4ea9-9232-51428abf273c", {  // ✅ Backend Needed
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        if (res.ok) {
+            msgEl.style.color = "#7200ff";
+            msgEl.innerHTML = "✅ Sent Successfully to Customer Care!";
+            e.target.reset();
+        } else {
+            msgEl.style.color = "red";
+            msgEl.innerHTML = "❌ Error sending!";
+        }
+
+    } catch (err) {
+        msgEl.style.color = "red";
+        msgEl.innerHTML = "⚠️ Network error!";
+    }
+});
+</script>
+
+</body>
+</html>
