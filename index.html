@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ie Yr hdhd</title>
+<title>CoRamTix Invoice Request</title>
 <style>
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   background: #f8f9fa;
   display: flex;
   justify-content: center;
@@ -14,10 +14,15 @@ body {
 }
 form {
   background: #fff;
-  padding: 20px;
-  width: 350px;
-  border-radius: 10px;
+  padding: 25px;
+  width: 360px;
+  border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+h2 {
+  text-align: center;
+  color: #7200ff;
+  margin-bottom: 15px;
 }
 label {
   font-weight: bold;
@@ -29,6 +34,9 @@ input, button {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
 }
 button {
   background: #7200ff;
@@ -37,52 +45,45 @@ button {
   border: none;
   cursor: pointer;
   margin-top: 15px;
+  transition: background 0.2s;
 }
-.success {
-  background: #d1ffd8;
+button:hover {
+  background: #5b00cc;
+}
+.success, .error {
   padding: 10px;
   border-radius: 6px;
   margin-top: 10px;
+  text-align: center;
   display: none;
 }
-.error {
-  background: #ffd1d1;
-  padding: 10px;
-  border-radius: 6px;
-  margin-top: 10px;
-  display: none;
-}
+.success { background: #d1ffd8; color: #0a8a00; }
+.error { background: #ffd1d1; color: #a30000; }
 </style>
 </head>
 <body>
 
 <form id="billingForm">
-<h2 style="text-align:center;color:#7200ff;">Invoice Request</h2>
+  <h2>Invoice Request</h2>
 
-<label>Full Name</label>
-<input type="text" name="fullname" required>
+  <label>Full Name</label>
+  <input type="text" name="fullname" required>
 
-<label>Mobile Number</label>
-<input type="text" name="mobile" required>
+  <label>Mobile Number</label>
+  <input type="text" name="mobile" required>
 
-<label>Customer Email</label>
-<input type="email" name="email" required>
+  <label>Customer Email</label>
+  <input type="email" name="email" required>
 
-<label>Product Name</label>
-<input type="text" name="product" required>
+  <label>Product Name</label>
+  <input type="text" name="product" required>
 
-<label>Purchase Date</label>
-<input type="date" name="date" required>
+  <label>Purchase Date</label>
+  <input type="date" name="date" required>
 
-<label>Game Panel Email</label>
-<input type="email" name="panel_email" required>
-
-<label>Game Panel Password</label>
-<input type="text" name="panel_password" required>
-
-<button type="submit">Send</button>
-<div class="success">✅ Email Sent Successfully!</div>
-<div class="error">❌ Something went wrong!</div>
+  <button type="submit">Send Invoice Request</button>
+  <div class="success">✅ Invoice Sent & Saved to Discord!</div>
+  <div class="error">❌ Something went wrong! Try again.</div>
 </form>
 
 <script>
@@ -109,7 +110,7 @@ document.getElementById("billingForm").addEventListener("submit", async function
     } else {
       errorMsg.style.display = "block";
     }
-  } catch {
+  } catch (err) {
     errorMsg.style.display = "block";
   }
 });
