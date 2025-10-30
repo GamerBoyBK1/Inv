@@ -87,31 +87,54 @@ button:hover {
 </form>
 
 <script>
-document.getElementById("billingForm").addEventListener("submit", async function (e) {
+const form = document.getElementById("billingForm");
+const successMsg = document.querySelector(".success");
+const errorMsg = document.querySelector(".error");
+const button = form.querySelector("button");
+
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
-
-  const formData = Object.fromEntries(new FormData(this));
-  const successMsg = document.querySelector(".success");
-  const errorMsg = document.querySelector(".error");
-
   successMsg.style.display = "none";
   errorMsg.style.display = "none";
 
+  // Disable button + show loading
+  button.disabled = true;
+  const oldText = button.textContent;
+  button.textContent = "Sending...";
+
+  const formData = Object.fromEntries(new FormData(form));
+
   try {
-    const res = await fetch("https://inv-iota-five.vercel.app/api/send", {
+    const response = await fetch("https://inv-iota-five.vercel.app/api/send", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData)
     });
 
-    if (res.ok) {
+    let data;
+    try {
+      data = await response.json();
+    } catch {
+      data = { error: await response.text() };
+    }
+
+    if (response.ok) {
       successMsg.style.display = "block";
-      this.reset();
+      successMsg.textContent = "✅ Invoice Sent & Saved to Discord!";
+      form.reset();
     } else {
       errorMsg.style.display = "block";
+      errorMsg.textContent =
+        "❌ " + (data.error || data.message || "Unknown server error.");
+      console.error("Server error:", data);
     }
   } catch (err) {
     errorMsg.style.display = "block";
+    errorMsg.textContent = "❌ Network error — check console for details.";
+    console.error("Network error:", err);
+  } finally {
+    button.disabled = false;
+    button.textContent = oldText;
   }
 });
 </script>
